@@ -1,0 +1,19 @@
+rules_version = '2';
+
+// Serviço de regras do Cloud Firestore
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Regras aplicadas à coleção "projects"
+    match /projects/{projectId} {
+      
+      // Permitir que qualquer visitante acesse e leia a lista de projetos do portfólio
+      allow read: if true;
+      
+      // Permitir escrita (criar, editar, excluir) apenas se o usuário estiver autenticado
+      // e se o seu UID for exatamente igual ao UID do Administrador configurado.
+      // IMPORTANTE: Substitua "SEU_ALLOWED_UID_AQUI" pelo UID real obtido após seu primeiro login de teste.
+      allow write: if request.auth != null && request.auth.uid == "SEU_ALLOWED_UID_AQUI";
+    }
+  }
+}
